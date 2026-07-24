@@ -5,27 +5,49 @@ body {
 	background: #000000;
 	color: #ffffff;
 }
-header {
-	display: absolute;
-	flex-direction: row;
-	justify-content: space-between;
-	top: 0;
-	left: 0;
-}
-.clock-span {
+
+header .clock-span {
 	position: relative;
 	font-size: 4rem;
 }
 
 main {
+	display: flex;
+	justify-content: center;
+	margin: 2rem 1rem 5rem;
 }
 .bookmarks-container {
+	border-style: solid;
+	border-width: 2px;
+	border-color: #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 90%;
+	height: 30vh;
+	min-height: 20vh;
 }
 
 footer {
 	display: flex;
-	align-items: center;
+	justify-content: center;
+	margin: 5rem 1rem 2rem;
 }
+.footer-object-container {
+	border-style: solid;
+	border-width: 2px;
+	border-color: #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 50%;
+
+	height: 20vh;
+	min-height: 10vh;
+}
+
 .btn-container {
 	position: fixed;
 	bottom: 5px;
@@ -46,7 +68,15 @@ footer {
 }
 
 @media (max-width: 600px) {
-	.clock-span {
+	header .clock-span {
 		font-size: 2rem;
+	}
+	.bookmarks-container {
+		width: 20rem;
+		height: fit-content;
+	}
+	.footer-object-container {
+		width: 20rem;
+		height: fit-content;
 	}
 }
