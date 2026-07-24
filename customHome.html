@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<header>
-			<span id="clock" class="clock-span">00:00</span>
+			<span id="clock" class="clock-span"></span>
 		</header>
 		<main>
 			<div id="bookmarks-container" class="bookmarks-container">
@@ -18,8 +18,17 @@
 		</main>
 		<footer>
 			<div id="footer-object-container" class="footer-object-container">
-				See if we can include the brave stats thing here? or maybe a
-				feed or something idk man
+				<div id="weather" class="weather">
+					<button id="weather-menu" class="weather-menu-button" type="button">
+						...
+					</button>
+					<label id="timezone" class="timezone">
+						<!-- <span id="country">country</span>: -->
+						<span id="city">city</span>,
+						<span id="region">region</span>
+					</label>
+					<div id="weather-output" class="weather-output"></div>
+				</div>
 			</div>
 		</footer>
 		<div id="btn-container" class="btn-container">
@@ -27,6 +36,20 @@
 				&#9881;
 			</button>
 		</div>
-		<script src="customHome.js"></script>
+		<dialog id="settings-dialog" class="settings-dialog">
+			<form id="settings-form" class="settings-form">
+				<h2 class="settings-title">Weather settings</h2>
+				<div id="settings-fields" class="settings-fields"></div>
+				<menu class="settings-actions">
+					<button id="settings-cancel" type="button" class="settings-btn">
+						Cancel
+					</button>
+					<button type="submit" class="settings-btn settings-btn-primary">
+						Save
+					</button>
+				</menu>
+			</form>
+		</dialog>
+		<script type="module" src="customHome.js"></script>
 	</body>
 </html>
