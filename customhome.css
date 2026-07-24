@@ -1,0 +1,52 @@
+body {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem;
+	background: #000000;
+	color: #ffffff;
+}
+header {
+	display: absolute;
+	flex-direction: row;
+	justify-content: space-between;
+	top: 0;
+	left: 0;
+}
+.clock-span {
+	position: relative;
+	font-size: 4rem;
+}
+
+main {
+}
+.bookmarks-container {
+}
+
+footer {
+	display: flex;
+	align-items: center;
+}
+.btn-container {
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+}
+.settings-button {
+	background-color: transparent;
+	color: #ffffff;
+	display: flex;
+	width: 2rem;
+	height: 2rem;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	border-radius: 8px;
+	font-size: 2rem;
+}
+
+@media (max-width: 600px) {
+	.clock-span {
+		font-size: 2rem;
+	}
+}
