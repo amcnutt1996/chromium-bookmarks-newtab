@@ -18,15 +18,27 @@ export const DEFAULT_SETTINGS = {
 		forecast_days: 3,
 		current: {
 			enabled: true,
-			variables: ["temperature_2m", "weather_code", "apparent_temperature"],
+			variables: [
+				"temperature_2m",
+				"weather_code",
+				"apparent_temperature",
+			],
 		},
 		hourly: {
 			enabled: false,
-			variables: ["temperature_2m", "precipitation_probability", "weather_code"],
+			variables: [
+				"temperature_2m",
+				"precipitation_probability",
+				"weather_code",
+			],
 		},
 		daily: {
 			enabled: true,
-			variables: ["temperature_2m_max", "temperature_2m_min", "weather_code"],
+			variables: [
+				"temperature_2m_max",
+				"temperature_2m_min",
+				"weather_code",
+			],
 		},
 	},
 };
@@ -53,12 +65,12 @@ export const mergeDefaults = (defaults, saved) => {
 };
 
 // Read the saved settings and merge them over the defaults.
-export const loadSettings = async () => {
+export const loadWeatherSettings = async () => {
 	const stored = await chrome.storage.sync.get(STORAGE_KEY);
 	return mergeDefaults(DEFAULT_SETTINGS, stored[STORAGE_KEY] ?? {});
 };
 
 // Persist the full settings object.
-export const saveSettings = async (settings) => {
+export const saveWeatherSettings = async (settings) => {
 	await chrome.storage.sync.set({ [STORAGE_KEY]: settings });
 };

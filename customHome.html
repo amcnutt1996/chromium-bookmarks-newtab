@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="customHome.css" />
 	</head>
 	<body>
+		<!-- <script type="module" src="https://jelly-ui.com/package.js"></script> -->
 		<header>
 			<span id="clock" class="clock-span"></span>
 		</header>
@@ -19,7 +20,11 @@
 		<footer>
 			<div id="footer-object-container" class="footer-object-container">
 				<div id="weather" class="weather">
-					<button id="weather-menu" class="weather-menu-button" type="button">
+					<button
+						id="weather-menu"
+						class="weather-menu-button"
+						type="button"
+					>
 						...
 					</button>
 					<label id="timezone" class="timezone">
@@ -41,15 +46,22 @@
 				<h2 class="settings-title">Weather settings</h2>
 				<div id="settings-fields" class="settings-fields"></div>
 				<menu class="settings-actions">
-					<button id="settings-cancel" type="button" class="settings-btn">
+					<button
+						id="settings-cancel"
+						type="button"
+						class="settings-btn"
+					>
 						Cancel
 					</button>
-					<button type="submit" class="settings-btn settings-btn-primary">
+					<button
+						type="submit"
+						class="settings-btn settings-btn-primary"
+					>
 						Save
 					</button>
 				</menu>
 			</form>
 		</dialog>
-		<script type="module" src="customHome.js"></script>
+		<script type="module" src="customHome.js" defer></script>
 	</body>
 </html>

@@ -75,7 +75,7 @@ const buildSectionFieldset = (section, sectionSettings) => {
 };
 
 // Populate #settings-fields to reflect `settings`.
-export const buildSettingsForm = (settings) => {
+export const buildWeatherSettingsForm = (settings) => {
 	const container = fieldsEl();
 	container.replaceChildren();
 	const weather = settings.weather;
@@ -87,11 +87,32 @@ export const buildSettingsForm = (settings) => {
 	legend.textContent = "units & range";
 	shared.append(legend);
 	shared.append(
-		labeled("temperature", buildUnitSelect("temperature_unit", weather.temperature_unit)),
-		labeled("wind speed", buildUnitSelect("wind_speed_unit", weather.wind_speed_unit)),
-		labeled("precipitation", buildUnitSelect("precipitation_unit", weather.precipitation_unit)),
-		labeled("past days", buildNumberInput("past_days", weather.past_days, { min: 0, max: 92 })),
-		labeled("forecast days", buildNumberInput("forecast_days", weather.forecast_days, { min: 1, max: 16 })),
+		labeled(
+			"temperature",
+			buildUnitSelect("temperature_unit", weather.temperature_unit),
+		),
+		labeled(
+			"wind speed",
+			buildUnitSelect("wind_speed_unit", weather.wind_speed_unit),
+		),
+		labeled(
+			"precipitation",
+			buildUnitSelect("precipitation_unit", weather.precipitation_unit),
+		),
+		labeled(
+			"past days",
+			buildNumberInput("past_days", weather.past_days, {
+				min: 0,
+				max: 92,
+			}),
+		),
+		labeled(
+			"forecast days",
+			buildNumberInput("forecast_days", weather.forecast_days, {
+				min: 1,
+				max: 16,
+			}),
+		),
 	);
 	container.append(shared);
 
@@ -103,7 +124,7 @@ export const buildSettingsForm = (settings) => {
 
 // Read #settings-fields back into a new settings object, preserving any
 // non-weather keys (e.g. version) from `baseSettings`.
-export const readSettingsForm = (baseSettings) => {
+export const readWeatherSettings = (baseSettings) => {
 	const container = fieldsEl();
 	const weather = { ...baseSettings.weather };
 
@@ -116,14 +137,20 @@ export const readSettingsForm = (baseSettings) => {
 		const input = container.querySelector(`input[data-days="${key}"]`);
 		if (input) {
 			const num = Number(input.value);
-			weather[key] = Number.isFinite(num) ? num : baseSettings.weather[key];
+			weather[key] = Number.isFinite(num)
+				? num
+				: baseSettings.weather[key];
 		}
 	}
 
 	for (const section of SECTIONS) {
-		const enabled = container.querySelector(`input[data-section-enabled="${section}"]`);
+		const enabled = container.querySelector(
+			`input[data-section-enabled="${section}"]`,
+		);
 		const variables = [
-			...container.querySelectorAll(`input[data-section="${section}"]:checked`),
+			...container.querySelectorAll(
+				`input[data-section="${section}"]:checked`,
+			),
 		].map((cb) => cb.dataset.variable);
 		weather[section] = { enabled: Boolean(enabled?.checked), variables };
 	}
