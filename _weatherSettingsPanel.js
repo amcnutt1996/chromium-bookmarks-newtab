@@ -3,7 +3,92 @@
 // rebuilt from scratch each time the panel opens, so it always reflects the
 // variables currently declared in weather.js.
 
-import { WEATHER_VARIABLES } from "./weather.js";
+export const WEATHER_VARIABLES = {
+	current: [
+		"temperature_2m",
+		"apparent_temperature",
+		"precipitation",
+		"weather_code",
+		"wind_speed_10m",
+		"relative_humidity_2m",
+		"cloud_cover",
+		"is_day",
+	],
+	hourly: [
+		"temperature_2m",
+		"apparent_temperature",
+		"precipitation",
+		"precipitation_probability",
+		"weather_code",
+		"visibility",
+		"cloud_cover",
+		"wind_speed_10m",
+		"relative_humidity_2m",
+	],
+	daily: [
+		"temperature_2m_max",
+		"temperature_2m_min",
+		"apparent_temperature_max",
+		"apparent_temperature_min",
+		"precipitation_sum",
+		"rain_sum",
+		"precipitation_probability_max",
+		"weather_code",
+		"wind_speed_10m_max",
+		"wind_gusts_10m_max",
+		"wind_direction_10m_dominant",
+		"uv_index_max",
+		"sunrise",
+		"sunset",
+		"daylight_duration",
+		"sunshine_duration",
+	],
+};
+
+// Persistent user settings, backed by chrome.storage.sync so choices roam
+// across the user's signed-in browsers and survive between sessions.
+//
+// DEFAULT_SETTINGS is the single source of truth for the settings *shape*.
+// Storage holds the full current settings object; on load we merge it over
+// the defaults (see mergeDefaults) so the result always matches the current
+// schema — newly added settings get defaults, removed ones are dropped.
+
+export const STORAGE_KEY = "settings";
+
+export const DEFAULT_SETTINGS = {
+	version: 1,
+	weather: {
+		temperature_unit: "fahrenheit", // "celsius" | "fahrenheit"
+		wind_speed_unit: "mph", // "kmh" | "ms" | "mph" | "kn"
+		precipitation_unit: "inch", // "mm" | "inch"
+		past_days: 0,
+		forecast_days: 3,
+		current: {
+			enabled: true,
+			variables: [
+				"temperature_2m",
+				"weather_code",
+				"apparent_temperature",
+			],
+		},
+		hourly: {
+			enabled: false,
+			variables: [
+				"temperature_2m",
+				"precipitation_probability",
+				"weather_code",
+			],
+		},
+		daily: {
+			enabled: true,
+			variables: [
+				"temperature_2m_max",
+				"temperature_2m_min",
+				"weather_code",
+			],
+		},
+	},
+};
 
 const SECTIONS = ["current", "hourly", "daily"];
 
@@ -13,10 +98,6 @@ const UNIT_OPTIONS = {
 	wind_speed_unit: ["mph", "kmh", "ms", "kn"],
 	precipitation_unit: ["inch", "mm"],
 };
-
-// The container inside <form id="settings-form"> that we fill/clear. Keeping the
-// form's action buttons outside this element means rebuilding never wipes them.
-const fieldsEl = () => document.getElementById("settings-fields");
 
 const labeled = (labelText, control) => {
 	const label = document.createElement("label");
@@ -76,7 +157,7 @@ const buildSectionFieldset = (section, sectionSettings) => {
 
 // Populate #settings-fields to reflect `settings`.
 export const buildWeatherSettingsForm = (settings) => {
-	const container = fieldsEl();
+	const container = document.getElementById("weather-settings-form");
 	container.replaceChildren();
 	const weather = settings.weather;
 
@@ -125,7 +206,7 @@ export const buildWeatherSettingsForm = (settings) => {
 // Read #settings-fields back into a new settings object, preserving any
 // non-weather keys (e.g. version) from `baseSettings`.
 export const readWeatherSettings = (baseSettings) => {
-	const container = fieldsEl();
+	const container = document.getElementById("weather-settings-fields");
 	const weather = { ...baseSettings.weather };
 
 	for (const [key] of Object.entries(UNIT_OPTIONS)) {
@@ -137,9 +218,8 @@ export const readWeatherSettings = (baseSettings) => {
 		const input = container.querySelector(`input[data-days="${key}"]`);
 		if (input) {
 			const num = Number(input.value);
-			weather[key] = Number.isFinite(num)
-				? num
-				: baseSettings.weather[key];
+			weather[key] =
+				Number.isFinite(num) ? num : baseSettings.weather[key];
 		}
 	}
 
@@ -156,4 +236,60 @@ export const readWeatherSettings = (baseSettings) => {
 	}
 
 	return { ...baseSettings, weather };
+};
+
+const isPlainObject = (value) =>
+	value !== null && typeof value === "object" && !Array.isArray(value);
+
+// Recursively merge `saved` over `defaults`, iterating the DEFAULTS keys so the
+// result always conforms to the current schema. Plain objects recurse; arrays
+// and primitives take the saved value when present (so an intentionally empty
+// `variables: []` is preserved rather than falling back to the default list).
+let defaults = DEFAULT_SETTINGS;
+export const mergeDefaults = (defaults, saved) => {
+	if (!isPlainObject(defaults)) {
+		return saved === undefined ? defaults : saved;
+	}
+	if (!isPlainObject(saved)) {
+		return defaults;
+	}
+	const merged = {};
+	for (const key of Object.keys(defaults)) {
+		merged[key] = mergeDefaults(defaults[key], saved[key]);
+	}
+	return merged;
+};
+
+// Read the saved settings and merge them over the defaults.
+export const loadWeatherSettings = async () => {
+	const stored = await chrome.storage.sync.get(STORAGE_KEY);
+	return mergeDefaults(DEFAULT_SETTINGS, stored[STORAGE_KEY] ?? {});
+};
+
+// Persist the full settings object.
+export const saveWeatherSettings = async (settings) => {
+	await chrome.storage.sync.set({ [STORAGE_KEY]: settings });
+};
+
+export const showWeatherSettingsDialog = () => {
+	// let currentSettings = loadWeatherSettings();
+
+	// The container inside <form id="settings-form"> that we fill/clear. Keeping the
+	// form's action buttons outside this element means rebuilding never wipes them.
+	const fieldsEl = () => document.getElementById("weather-settings-fields");
+
+	let currentSettings = readWeatherSettings(fieldsEl);
+
+	const weatherSettingsButton = document.getElementById("weather-menu");
+	const weatherSettingsDialog = document.getElementById(
+		"weather-settings-dialog",
+	);
+	const weatherSettingsForm = document.getElementById(
+		"weather-settings-form",
+	);
+
+	weatherSettingsButton.addEventListener("click", () => {
+		buildWeatherSettingsForm(fieldsEl);
+		weatherSettingsDialog.showModal();
+	});
 };

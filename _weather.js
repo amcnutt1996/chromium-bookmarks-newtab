@@ -1,50 +1,16 @@
+import {
+	buildWeatherSettingsForm,
+	readWeatherSettings,
+	loadWeatherSettings,
+	saveWeatherSettings,
+} from "./_weatherSettingsPanel.js";
+// import { buildWeatherSettingsForm } from "./weatherSettingsPanel";
 // Weather request "types" + Open-Meteo URL builder.
 // Docs: https://open-meteo.com/en/docs
 
 // ── Reference: variables Open-Meteo offers per section ──────────────
 // Pull from these when building a settings UI. Note the daily section
 // uses aggregated names (*_max / *_min / *_sum), not the raw hourly ones.
-export const WEATHER_VARIABLES = {
-	current: [
-		"temperature_2m",
-		"apparent_temperature",
-		"precipitation",
-		"weather_code",
-		"wind_speed_10m",
-		"relative_humidity_2m",
-		"cloud_cover",
-		"is_day",
-	],
-	hourly: [
-		"temperature_2m",
-		"apparent_temperature",
-		"precipitation",
-		"precipitation_probability",
-		"weather_code",
-		"visibility",
-		"cloud_cover",
-		"wind_speed_10m",
-		"relative_humidity_2m",
-	],
-	daily: [
-		"temperature_2m_max",
-		"temperature_2m_min",
-		"apparent_temperature_max",
-		"apparent_temperature_min",
-		"precipitation_sum",
-		"rain_sum",
-		"precipitation_probability_max",
-		"weather_code",
-		"wind_speed_10m_max",
-		"wind_gusts_10m_max",
-		"wind_direction_10m_dominant",
-		"uv_index_max",
-		"sunrise",
-		"sunset",
-		"daylight_duration",
-		"sunshine_duration",
-	],
-};
 
 // ── The request "struct": location + shared settings + 3 sections ───
 // Anything left `undefined` is simply omitted from the URL, so every
@@ -171,7 +137,7 @@ export const updateWeather = async () => {
 	const req = createWeatherRequest({
 		latitude: lat,
 		longitude: lon,
-		...currentSettings.weather, // units, days, and the three sections
+		...currentWeatherSettings.weather, // units, days, and the three sections
 	});
 	const url = buildWeatherURL(req);
 	console.log(url);
@@ -179,3 +145,23 @@ export const updateWeather = async () => {
 	console.log(data);
 	renderWeather(data, currentWeatherSettings.weather);
 };
+
+// export const weatherPanel = () => {
+// 	const dialog = document.getElementById("settings-dialog");
+// 	const form = document.getElementById("settings-form");
+
+// 	document.getElementById("weather-menu").addEventListener("click", () => {
+// 		buildWeatherSettingsForm(currentSettings);
+// 		dialog.showModal();
+// 	});
+// 	document.getElementById("settings-cancel").addEventListener("click", () => {
+// 		dialog.close();
+// 	});
+// 	form.addEventListener("submit", async (event) => {
+// 		event.preventDefault();
+// 		currentSettings = readWeatherSettings(currentSettings);
+// 		await saveWeatherSettings(currentSettings);
+// 		dialog.close();
+// 		await updateWeather();
+// 	});
+// };

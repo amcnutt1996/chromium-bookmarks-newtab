@@ -8,7 +8,6 @@
 		<link rel="stylesheet" href="customHome.css" />
 	</head>
 	<body>
-		<!-- <script type="module" src="https://jelly-ui.com/package.js"></script> -->
 		<header>
 			<span id="clock" class="clock-span"></span>
 		</header>
@@ -41,27 +40,33 @@
 				&#9881;
 			</button>
 		</div>
-		<dialog id="settings-dialog" class="settings-dialog">
-			<form id="settings-form" class="settings-form">
-				<h2 class="settings-title">Weather settings</h2>
-				<div id="settings-fields" class="settings-fields"></div>
+
+		<dialog id="weather-settings-dialog" class="weather-settings-dialog">
+			<form id="weather-settings-form" class="weather-settings-form">
+				<h2 class="weather-settings-title">Weather settings</h2>
+				<div
+					id="weather-settings-fields"
+					class="weather-settings-fields"
+				></div>
 				<menu class="settings-actions">
 					<button
-						id="settings-cancel"
+						id="weather-settings-cancel"
 						type="button"
-						class="settings-btn"
+						class="weather-settings-btn"
 					>
 						Cancel
 					</button>
 					<button
+						id="weather-settings-confirm"
 						type="submit"
-						class="settings-btn settings-btn-primary"
+						class="weather-settings-btn settings-btn-primary"
 					>
 						Save
 					</button>
 				</menu>
 			</form>
 		</dialog>
+
 		<script type="module" src="customHome.js" defer></script>
 	</body>
 </html>
