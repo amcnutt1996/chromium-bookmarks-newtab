@@ -8,8 +8,10 @@ export const addBookmarksToPage = async () => {
 	const loadedBookmarksBar = await fetchBookmarks();
 	console.log(loadedBookmarksBar);
 	const bookmarksContainer = document.getElementById("bookmarks-container");
+	//TODO: add the images for the icons for each bookmark somehow
 	for (let i = 0; i < loadedBookmarksBar.length; i++) {
 		const bmarkLink = document.createElement("a");
+		//const bmarkImage = document.createElement("img");
 		const bmarkDiv = document.createElement("div");
 		const bmarkLabel = document.createElement("label");
 
@@ -17,7 +19,7 @@ export const addBookmarksToPage = async () => {
 		bmarkLink.appendChild(bmarkDiv);
 		bmarkDiv.appendChild(bmarkLabel);
 
-		bmarkDiv.setAttribute("id", "bookmark-div");
+		bmarkDiv.setAttribute("class", "bookmark-div");
 		bmarkLink.setAttribute("href", loadedBookmarksBar[i].url);
 		bmarkLabel.innerText = loadedBookmarksBar[i].title;
 	}
