@@ -1,3 +1,6 @@
+import { weatherSettingsButton } from "./weatherWidget.js";
+import { addBookmarksToPage } from "./bookmarks.js";
+
 // Wire the gear button, cancel button, and form submit to the settings panel.
 // const pageSettingsPanel = () => {
 // 	const dialog = document.getElementById("settings-dialog");
@@ -31,6 +34,7 @@ const updateClock = () => {
 
 const CustomHome = async () => {
 	updateClock();
+	addBookmarksToPage();
 };
 
 CustomHome();

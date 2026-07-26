@@ -3,7 +3,7 @@ import {
 	readWeatherSettings,
 	loadWeatherSettings,
 	saveWeatherSettings,
-} from "./_weatherSettingsPanel.js";
+} from "./old_weatherSettingsPanel.js";
 // import { buildWeatherSettingsForm } from "./weatherSettingsPanel";
 // Weather request "types" + Open-Meteo URL builder.
 // Docs: https://open-meteo.com/en/docs

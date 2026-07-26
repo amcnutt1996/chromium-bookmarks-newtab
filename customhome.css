@@ -74,7 +74,7 @@ footer {
 	align-items: center;
 	gap: 0.5rem;
 }
-.weather-menu-button {
+.weather-settings-button {
 	position: absolute;
 	top: 6px;
 	right: 8px;
@@ -191,4 +191,11 @@ footer {
 		width: 20rem;
 		height: fit-content;
 	}
+}
+
+#bookmark-div {
+	display: flex;
+	width: 5px;
+	height: 5px;
+	font-size: x-small;
 }
