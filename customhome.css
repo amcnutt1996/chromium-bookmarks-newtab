@@ -21,23 +21,40 @@ main {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	border-style: solid;
+	/* border-style: solid;
 	border-width: 2px;
-	border-color: #ffffff;
+	border-color: #ffffff; */
 	width: 90%;
 	height: 30vh;
 	min-height: 20vh;
 }
-.bookmark-div {
-	font-size: x-small;
+.bookmarks-container a {
+	display: flex;
+	flex-direction: column;
+	/* width: 50px;
+	height: 50px; */
+	margin: 10px;
+	text-decoration: none;
+	color: #ffffff;
+}
+.bookmarks-container a img {
+	width: 50px;
+	height: 50px;
+}
+.bookmarks-container a label {
+	display: flex;
+	width: 50px;
+	text-wrap-mode: wrap;
+	overflow: hidden;
+	text-decoration: none;
 }
 
-footer {
+/* footer {
 	display: flex;
 	justify-content: center;
 	margin: 5rem 1rem 2rem;
-}
-.footer-object-container {
+} */
+/* .footer-object-container {
 	position: relative;
 	border-style: solid;
 	border-width: 2px;
@@ -50,9 +67,9 @@ footer {
 
 	height: 20vh;
 	min-height: 10vh;
-}
+} */
 
-.btn-container {
+/* .btn-container {
 	position: fixed;
 	bottom: 5px;
 	right: 5px;
@@ -99,10 +116,9 @@ footer {
 }
 .weather-line {
 	margin: 0;
-}
+} */
 
-/* Settings panel */
-.settings-dialog {
+/* .settings-dialog {
 	background: #1a1a1f;
 	color: #ffffff;
 	border: 1px solid #333;
@@ -180,7 +196,7 @@ footer {
 .settings-btn-primary {
 	background: #4f46e5;
 	border-color: #4f46e5;
-}
+} */
 
 @media (max-width: 600px) {
 	header .clock-span {

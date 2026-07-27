@@ -4,5 +4,5 @@
 	"description": "Allows overriding the default Chromium new tab window.",
 	"version": "1.0",
 	"chrome_url_overrides": { "newtab": "customHome.html" },
-	"permissions": ["bookmarks", "storage"]
+	"permissions": ["bookmarks", "storage", "favicon"]
 }
