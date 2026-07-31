@@ -1,70 +1,44 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>New Tab</title>
-		<link rel="stylesheet" href="customHome.css" />
-	</head>
-	<body>
-		<header>
-			<span id="clock" class="clock-span"></span>
-		</header>
-		<main>
-			<div id="bookmarks-container" class="bookmarks-container"></div>
-		</main>
-		<!-- <footer>
-			<div id="footer-object-container" class="footer-object-container">
-				<div id="weather" class="weather">
-					<button
-						id="weather-settings"
-						class="weather-settings-button"
-						type="button"
-					>
-						...
-					</button>
-					<label id="timezone" class="timezone">
-						<span id="country">country</span>:
-						<span id="city">city</span>,
-						<span id="region">region</span>
-					</label>
-					<div id="weather-output" class="weather-output"></div>
-				</div>
-			</div>
-		</footer> -->
-		<!-- <div id="btn-container" class="btn-container">
-			<button id="settings" class="settings-button" type="button">
-				&#9881;
-			</button>
-		</div> -->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>New Tab</title>
+        <link rel="stylesheet" href="customHome.css" />
+    </head>
+    <body>
+        <header>
+            <span id="clock" class="clock-span"></span>
 
-		<!-- <dialog id="weather-settings-dialog" class="weather-settings-dialog">
-			<form id="weather-settings-form" class="weather-settings-form">
-				<h2 class="weather-settings-title">Weather settings</h2>
-				<div
-					id="weather-settings-fields"
-					class="weather-settings-fields"
-				></div>
-				<menu class="settings-actions">
-					<button
-						id="weather-settings-cancel"
-						type="button"
-						class="weather-settings-btn"
-					>
-						Cancel
-					</button>
-					<button
-						id="weather-settings-confirm"
-						type="submit"
-						class="weather-settings-btn settings-btn-primary"
-					>
-						Save
-					</button>
-				</menu>
-			</form>
-		</dialog> -->
+            <div id="weather-container" class="weather-container">
+                <span class="weather-title">Current Weather</span>
+                <!-- might add this back if i do more accurate location? -->
 
-		<script type="module" src="customHome.js" defer></script>
-	</body>
+                <!-- <span -->
+                <!--     ><label>City:&nbsp;</label><label id="city-value"></label -->
+                <!-- ></span> -->
+                <!-- <span -->
+                <!--     ><label>Zip:&nbsp;</label><label id="zip-value"></label -->
+                <!-- ></span> -->
+                <span
+                    ><label>Temperature:&nbsp;</label
+                    ><label id="curr-temp-value"></label
+                ></span>
+                <span
+                    ><label>Precipitation:&nbsp;</label
+                    ><label id="curr-precip-value"></label
+                ></span>
+                <span
+                    ><label>Elevation:&nbsp;</label
+                    ><label id="elevation-value"></label
+                ></span>
+            </div>
+        </header>
+        <main>
+            <div id="bookmarks-container" class="bookmarks-container"></div>
+        </main>
+
+        <script type="module" src="customHome.js" defer></script>
+    </body>
 </html>
