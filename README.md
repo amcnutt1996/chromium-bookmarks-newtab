@@ -1,15 +1,36 @@
-# Custom New Tab Extension for Chromium Browsers
+# Chromium Bookmarks New Tab
 
-I just got frustrated with the brave 'new tab page' not being able to add my bookmarks to the middle of the screen easily like in Safari, so I created this extension to overwrite the default new tab page.
+A Manifest V3 browser extension that replaces the Chromium new tab page with your Bookmarks Bar in the middle of the screen, Safari-style, plus a clock and local weather.
 
-It's super simple but I'll add to it as I want more stuff on the new tab page.
+![Screenshot of the custom new tab page](docs/screenshot.png)
+<!-- TODO: add docs/screenshot.png -->
 
-It gets bookmarks that are currently stored on your 'Bookmarks Bar' in any chromium browser. It has folder capabilities and you can navigate through them.
+I got frustrated that Brave's new tab page couldn't put my bookmarks front and center the way Safari does, so I built this to override it.
 
-### How to Install
+## What it does
+- Shows everything on your **Bookmarks Bar** as a grid with favicons.
+- Lets you open folders and step back out with a back button.
+- Shows a live clock and the current weather for your approximate location.
+- Works in any Chromium browser (Brave, Chrome, Edge, …).
 
-- Go to a chromium browser and open the extensions (I'm using Brave, but other browsers should have similar options)
-- Enable developer settings
-- Clone the repo with `git clone https://github.com/amcnutt1996/BraveHomepage.git`
-- In the extensions dev page use the 'load unpacked' option and select the `BraveHomepage` folder to load the extension.
-- Your browser might have a footer at the bottom that you might need to disable.
+## Tech stack
+Vanilla JavaScript (ES modules) · HTML/CSS · Chrome Extensions Manifest V3 (`chrome_url_overrides`, `bookmarks`, `favicon`) · ip-api.com · Open-Meteo
+
+## How it works
+- `manifest.json` overrides `newtab` with `customHome.html` and requests the `bookmarks`, `storage` and `favicon` permissions.
+- `bookmarks.js` reads the tree with `chrome.bookmarks.getTree()` and builds the grid from the Bookmarks Bar node. Folders re-render the grid with their children and keep a back stack.
+- Favicons come from the extension's built-in `/_favicon/` endpoint, so the page never fetches from the sites themselves.
+- `weather.js` gets an approximate location from ip-api.com, then fetches current conditions from Open-Meteo. Neither API needs a key.
+
+## Install (load unpacked)
+1. `git clone https://github.com/amcnutt1996/chromium-bookmarks-newtab.git`
+2. Open your browser's extensions page (`chrome://extensions`, `brave://extensions`, …) and turn on **Developer mode**.
+3. Click **Load unpacked** and select the `chromium-bookmarks-newtab` folder.
+4. Open a new tab. Some browsers show a footer you may need to disable.
+
+## What I learned
+- How Manifest V3 extensions declare page overrides and permissions, and how little code it takes to change core browser UI.
+- Turning a recursive data structure (the bookmark tree) into navigable UI state.
+
+## License
+[MIT](LICENSE)
