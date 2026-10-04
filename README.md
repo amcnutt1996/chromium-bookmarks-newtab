@@ -3,7 +3,8 @@
 A Manifest V3 browser extension that replaces the Chromium new tab page with your Bookmarks Bar in the middle of the screen, Safari-style, plus a clock and local weather.
 
 ![Screenshot of the custom new tab page](docs/screenshot.png)
-<!-- TODO: add docs/screenshot.png -->
+
+![Opening a bookmarks folder, with a Back button](docs/screenshot-folder.png)
 
 I got frustrated that Brave's new tab page couldn't put my bookmarks front and center the way Safari does, so I built this to override it.
 
