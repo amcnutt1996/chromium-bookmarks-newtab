@@ -71,7 +71,10 @@ async function fetchJson(url) {
     return response.json();
 }
 
-async function getLocation() {
+let locationPromise;
+let latestRequest = 0;
+
+async function lookupLocation() {
     const geoData = await fetchJson("http://ip-api.com/json/");
     if (typeof geoData.lat !== "number" || typeof geoData.lon !== "number") {
         throw new Error("Location lookup failed");
@@ -79,15 +82,24 @@ async function getLocation() {
     return geoData;
 }
 
-async function getWeather(lat, lon) {
+// Reuse the location across re-renders (e.g. a unit change); retry on failure.
+function getLocation() {
+    locationPromise ??= lookupLocation().catch((error) => {
+        locationPromise = undefined;
+        throw error;
+    });
+    return locationPromise;
+}
+
+async function getWeather(lat, lon, unit) {
     const params = new URLSearchParams({
         latitude: lat,
         longitude: lon,
         current:
             "temperature_2m,apparent_temperature,precipitation,weather_code,is_day",
         timezone: "auto",
-        temperature_unit: "fahrenheit",
-        precipitation_unit: "inch",
+        temperature_unit: unit,
+        precipitation_unit: unit === "celsius" ? "mm" : "inch",
     });
     const weatherData = await fetchJson(
         `https://api.open-meteo.com/v1/forecast?${params}`,
@@ -116,16 +128,20 @@ function setState(card, state) {
     card.setAttribute("aria-busy", state === "is-loading" ? "true" : "false");
 }
 
-export default async function weatherWidget() {
+export default async function weatherWidget(unit = "fahrenheit") {
     const card = document.getElementById("weather-container");
     const condition = document.getElementById("weather-condition");
+    // Ignore responses from earlier calls that finish after a newer one.
+    const request = ++latestRequest;
 
     try {
         const locationData = await getLocation();
         const weatherData = await getWeather(
             locationData.lat,
             locationData.lon,
+            unit,
         );
+        if (request !== latestRequest) return;
         const current = weatherData.current;
         const units = weatherData.current_units || {};
         const { label, icon } = describeWeather(
@@ -147,6 +163,7 @@ export default async function weatherWidget() {
         condition.textContent = label;
         setState(card, "is-ready");
     } catch (error) {
+        if (request !== latestRequest) return;
         console.warn("Weather unavailable:", error);
         document.getElementById("weather-icon").innerHTML = cloudIcon;
         condition.textContent = "Weather unavailable";

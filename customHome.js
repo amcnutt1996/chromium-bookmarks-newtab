@@ -1,11 +1,14 @@
 import weatherWidget from "./weather.js";
 import { addBookmarksToPage } from "./bookmarks.js";
 import { editIcon } from "./icons.js";
+import { initSettings, getSettings, onSettingsChange } from "./settings.js";
 
-const timeFormat = new Intl.DateTimeFormat(undefined, {
-    hour: "numeric",
-    minute: "2-digit",
-});
+const timeFormat = (use24h) =>
+    new Intl.DateTimeFormat(undefined, {
+        hour: use24h ? "2-digit" : "numeric",
+        minute: "2-digit",
+        hourCycle: use24h ? "h23" : "h12",
+    });
 const dateFormat = new Intl.DateTimeFormat(undefined, {
     weekday: "long",
     month: "long",
@@ -16,7 +19,7 @@ let clockTimer;
 
 const renderClock = () => {
     const now = new Date();
-    const parts = timeFormat.formatToParts(now);
+    const parts = timeFormat(getSettings().clock24h).formatToParts(now);
 
     // Show the AM/PM marker (if the locale uses one) in its own, smaller span.
     const time = parts
@@ -55,11 +58,25 @@ const startClock = () => {
 };
 
 const CustomHome = async () => {
+    const settings = await initSettings();
     startClock();
     document.querySelector("#edit-toggle .edit-toggle-icon").innerHTML =
         editIcon;
     addBookmarksToPage();
-    weatherWidget();
+    if (settings.showWeather) {
+        weatherWidget(settings.tempUnit);
+    }
+
+    onSettingsChange((next, previous) => {
+        if (next.clock24h !== previous.clock24h) {
+            updateClock();
+        }
+        const weatherTurnedOn = next.showWeather && !previous.showWeather;
+        const unitChanged = next.tempUnit !== previous.tempUnit;
+        if (next.showWeather && (weatherTurnedOn || unitChanged)) {
+            weatherWidget(next.tempUnit);
+        }
+    });
 };
 
 CustomHome();

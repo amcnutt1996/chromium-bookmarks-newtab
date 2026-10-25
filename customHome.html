@@ -6,6 +6,7 @@
         <meta name="color-scheme" content="dark" />
         <title>New Tab</title>
         <link rel="stylesheet" href="customHome.css" />
+        <script src="theme-boot.js"></script>
     </head>
     <body>
         <header class="page-header">
@@ -69,6 +70,21 @@
                 <div id="bookmarks-container" class="bookmarks-grid"></div>
             </section>
         </main>
+
+        <button
+            id="settings-toggle"
+            class="settings-toggle"
+            type="button"
+            aria-label="Settings"
+            aria-expanded="false"
+            aria-controls="settings-panel"
+        ></button>
+        <aside
+            id="settings-panel"
+            class="settings-panel"
+            aria-label="Settings"
+            hidden
+        ></aside>
 
         <script type="module" src="customHome.js"></script>
     </body>
