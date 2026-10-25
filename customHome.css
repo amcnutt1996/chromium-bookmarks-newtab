@@ -1,0 +1,1117 @@
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+
+:root {
+    color-scheme: dark;
+
+    /* Colors */
+    --bg-base: #0b0e17;
+    --bg-glow-1: rgba(88, 101, 242, 0.22);
+    --bg-glow-2: rgba(32, 178, 170, 0.14);
+    --bg-glow-3: rgba(176, 102, 214, 0.12);
+
+    --text: #eef1f8;
+    --text-muted: rgba(238, 241, 248, 0.62);
+    --text-faint: rgba(238, 241, 248, 0.4);
+
+    --accent: #8fb4ff;
+    --accent-strong: #b3cbff;
+    --accent-soft: rgba(143, 180, 255, 0.16);
+    --accent-glow: rgba(143, 180, 255, 0.45);
+    --on-accent: #0b1430;
+
+    --danger: #ff7a7a;
+    --danger-soft: rgba(255, 122, 122, 0.16);
+    --on-danger: #2b0808;
+
+    --glass-bg: rgba(255, 255, 255, 0.055);
+    --glass-bg-strong: rgba(24, 28, 42, 0.78);
+    --glass-border: rgba(255, 255, 255, 0.11);
+    --glass-highlight: rgba(255, 255, 255, 0.06);
+    --glass-blur: 22px;
+
+    --surface-hover: rgba(255, 255, 255, 0.07);
+    --surface-active: rgba(255, 255, 255, 0.11);
+    --chip-bg: rgba(255, 255, 255, 0.08);
+    --chip-border: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.06);
+
+    --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.35);
+    --shadow-pop: 0 18px 60px rgba(0, 0, 0, 0.5);
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-pill: 999px;
+
+    /* Spacing */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+
+    /* Type */
+    --font-sans:
+        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+
+    /* Bookmarks */
+    --tile-min: 96px;
+    --tile-icon: 48px;
+    --tile-gap: var(--space-3);
+
+    /* Motion */
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --dur-fast: 120ms;
+    --dur: 200ms;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+html {
+    min-height: 100%;
+    background-color: var(--bg-base);
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: clamp(var(--space-4), 4vw, var(--space-7));
+    font-family: var(--font-sans);
+    color: var(--text);
+    background-color: var(--bg-base);
+    background-image:
+        radial-gradient(
+            ellipse 80% 60% at 10% 0%,
+            var(--bg-glow-1),
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse 70% 60% at 100% 100%,
+            var(--bg-glow-2),
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse 60% 50% at 85% 10%,
+            var(--bg-glow-3),
+            transparent 60%
+        );
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+.glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow:
+        var(--shadow-card),
+        inset 0 1px 0 var(--glass-highlight);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+}
+
+/* ==========================================================================
+   Header: clock + weather
+   ========================================================================== */
+
+.page-header {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+.clock-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+}
+
+.clock {
+    display: flex;
+    align-items: baseline;
+    gap: 0.12em;
+    font-size: clamp(4rem, 11vw, 8.5rem);
+    font-weight: 200;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+}
+
+.clock-period {
+    font-size: 0.22em;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.clock-period:empty {
+    display: none;
+}
+
+.date {
+    padding-left: 0.2em;
+    font-size: clamp(1rem, 1.6vw, 1.35rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--text-muted);
+}
+
+/* Weather card */
+
+.weather-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    min-width: 280px;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-xl);
+    transition: opacity var(--dur) var(--ease);
+}
+
+.weather-now {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.weather-icon {
+    display: inline-flex;
+    width: 52px;
+    height: 52px;
+    color: var(--accent-strong);
+}
+
+.weather-icon:empty {
+    display: none;
+}
+
+.weather-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.weather-temp {
+    font-size: 3rem;
+    font-weight: 250;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.weather-condition {
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.weather-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+}
+
+.weather-stat {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-size: 0.85rem;
+}
+
+.weather-stat dt {
+    color: var(--text-muted);
+}
+
+.weather-stat dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.weather-card.is-loading .weather-details {
+    opacity: 0.55;
+}
+
+.weather-card.is-loading .weather-now,
+.weather-card.is-loading .weather-stats {
+    display: none;
+}
+
+.weather-card.is-error {
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.weather-card.is-error .weather-temp,
+.weather-card.is-error .weather-stats {
+    display: none;
+}
+
+.weather-card.is-error .weather-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--text-faint);
+}
+
+.weather-card.is-error .weather-condition {
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Bookmarks panel
+   ========================================================================== */
+
+main {
+    display: flex;
+    justify-content: center;
+    max-width: 1120px;
+    margin: clamp(var(--space-6), 6vh, 72px) auto var(--space-7);
+}
+
+.bookmarks-panel {
+    width: 100%;
+    max-width: 960px;
+    padding: var(--space-4) var(--space-5) var(--space-5);
+}
+
+.bookmarks-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Breadcrumbs */
+
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.crumb {
+    max-width: 18ch;
+    padding: var(--space-1) var(--space-3);
+    overflow: hidden;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    transition:
+        color var(--dur-fast) var(--ease),
+        background-color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease);
+}
+
+.crumb:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+}
+
+.crumb.current,
+.crumb[aria-current="page"] {
+    font-weight: 600;
+    color: var(--text);
+    cursor: default;
+}
+
+.crumb.current:hover,
+.crumb[aria-current="page"]:hover {
+    background: transparent;
+}
+
+.crumb.drop-into {
+    color: var(--text);
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.crumb-sep {
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-faint);
+    user-select: none;
+}
+
+.crumb-sep svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Edit toggle */
+
+.edit-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 6px var(--space-3) 6px 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-border);
+    border-radius: var(--radius-pill);
+    transition:
+        color var(--dur-fast) var(--ease),
+        background-color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease);
+}
+
+.edit-toggle:hover {
+    color: var(--text);
+    background: var(--surface-active);
+}
+
+.edit-toggle[aria-pressed="true"] {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.edit-toggle[aria-pressed="true"]:hover {
+    background: var(--accent-strong);
+}
+
+.edit-toggle-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+}
+
+.edit-toggle-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Grid + tiles */
+
+.bookmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--tile-min), 1fr));
+    gap: var(--tile-gap);
+    min-height: 120px;
+}
+
+.tile {
+    position: relative;
+    min-width: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* The .tile wrapper is the drag source; inner elements must not hijack it. */
+.tile a,
+.tile img,
+.tile button,
+.tile svg {
+    -webkit-user-drag: none;
+}
+
+.tile-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    height: 100%;
+    padding: var(--space-3) var(--space-1) var(--space-2);
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-lg);
+    transition:
+        transform var(--dur) var(--ease),
+        background-color var(--dur) var(--ease),
+        border-color var(--dur) var(--ease),
+        box-shadow var(--dur) var(--ease);
+}
+
+.tile-main:hover {
+    background: var(--surface-hover);
+    border-color: var(--glass-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
+}
+
+.tile-main:active {
+    transform: translateY(-1px);
+    background: var(--surface-active);
+}
+
+.tile-main:focus-visible {
+    outline-offset: 0;
+    background: var(--surface-hover);
+}
+
+.tile-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: var(--tile-icon);
+    height: var(--tile-icon);
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-border);
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 1px 0 var(--glass-highlight);
+    transition:
+        box-shadow var(--dur) var(--ease),
+        border-color var(--dur) var(--ease);
+}
+
+.tile-main:hover .tile-icon {
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        inset 0 1px 0 var(--glass-highlight),
+        0 0 18px var(--accent-soft);
+}
+
+.tile-icon img {
+    display: block;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    pointer-events: none;
+}
+
+.tile-icon svg {
+    width: 28px;
+    height: 28px;
+    pointer-events: none;
+}
+
+.tile-label {
+    display: -webkit-box;
+    max-width: 100%;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
+    text-overflow: ellipsis;
+}
+
+/* Folder tiles */
+
+.tile--folder .tile-icon {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: rgba(143, 180, 255, 0.22);
+}
+
+.tile--folder .tile-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+.tile--folder.drop-into .tile-main {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    box-shadow:
+        0 0 0 3px var(--accent-soft),
+        0 0 24px var(--accent-glow);
+    transform: scale(1.04);
+}
+
+.tile--folder.drop-into .tile-icon {
+    color: var(--accent-strong);
+}
+
+/* Add tile: only in edit mode */
+
+.tile--add {
+    display: none;
+}
+
+.bookmarks-panel.is-editing .tile--add {
+    display: block;
+}
+
+.tile--add .tile-main {
+    color: var(--text-muted);
+    border: 1.5px dashed rgba(255, 255, 255, 0.22);
+}
+
+.tile--add .tile-main:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    border-style: dashed;
+}
+
+.tile--add .tile-icon {
+    color: var(--text-muted);
+    background: transparent;
+    border-style: dashed;
+    box-shadow: none;
+}
+
+.tile--add .tile-main:hover .tile-icon {
+    color: var(--accent);
+}
+
+/* Remove badge: only in edit mode */
+
+.tile-remove {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    z-index: 2;
+    display: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    color: var(--text);
+    background: var(--glass-bg-strong);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition:
+        background-color var(--dur-fast) var(--ease),
+        color var(--dur-fast) var(--ease),
+        transform var(--dur-fast) var(--ease);
+}
+
+.bookmarks-panel.is-editing .tile-remove {
+    display: grid;
+    animation: badge-in var(--dur) var(--ease);
+}
+
+.tile-remove:hover {
+    color: var(--on-danger);
+    background: var(--danger);
+    border-color: var(--danger);
+    transform: scale(1.1);
+}
+
+.tile-remove svg {
+    width: 12px;
+    height: 12px;
+    stroke-width: 2.5;
+}
+
+/* Edit mode jiggle */
+
+.bookmarks-panel.is-editing .tile:not(.tile--add) {
+    animation: jiggle 0.28s ease-in-out infinite alternate;
+    transform-origin: 50% 40%;
+}
+
+.bookmarks-panel.is-editing .tile:not(.tile--add):nth-child(2n) {
+    animation-delay: -0.14s;
+    animation-duration: 0.31s;
+}
+
+.bookmarks-panel.is-editing .tile:not(.tile--add):nth-child(3n) {
+    animation-delay: -0.07s;
+    animation-duration: 0.26s;
+}
+
+.bookmarks-panel.is-editing .tile-main {
+    cursor: grab;
+}
+
+.bookmarks-panel.is-editing .tile--add .tile-main {
+    cursor: pointer;
+}
+
+/* Hold still while something is being dragged (or pointed at). Selectors
+   must out-rank the animation shorthand above, which resets play-state. */
+.bookmarks-panel.is-editing .bookmarks-grid:has(.is-dragging) .tile,
+.bookmarks-panel.is-editing .tile:hover,
+.bookmarks-panel.is-editing .tile:focus-within {
+    animation-play-state: paused;
+}
+
+@keyframes jiggle {
+    from {
+        transform: rotate(-1.2deg);
+    }
+    to {
+        transform: rotate(1.2deg);
+    }
+}
+
+@keyframes badge-in {
+    from {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Drag states */
+
+.tile.is-dragging {
+    opacity: 0.35;
+}
+
+.tile.is-dragging .tile-main {
+    transform: scale(0.94);
+    box-shadow: none;
+}
+
+.tile.drop-before::before,
+.tile.drop-after::after {
+    content: "";
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    z-index: 3;
+    width: 3px;
+    background: var(--accent);
+    border-radius: var(--radius-pill);
+    box-shadow:
+        0 0 8px var(--accent-glow),
+        0 0 16px var(--accent-glow);
+    pointer-events: none;
+}
+
+.tile.drop-before::before {
+    left: calc(var(--tile-gap) / -2 - 1.5px);
+}
+
+.tile.drop-after::after {
+    right: calc(var(--tile-gap) / -2 - 1.5px);
+}
+
+/* Empty folder */
+
+.bookmarks-empty {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: var(--space-6) var(--space-4);
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-faint);
+}
+
+/* ==========================================================================
+   Dialog
+   ========================================================================== */
+
+.bm-dialog {
+    width: min(420px, calc(100vw - 2 * var(--space-4)));
+    max-height: calc(100vh - 2 * var(--space-4));
+    padding: 0;
+    color: var(--text);
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow:
+        var(--shadow-pop),
+        inset 0 1px 0 var(--glass-highlight);
+    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    backdrop-filter: blur(28px) saturate(150%);
+}
+
+.bm-dialog[open] {
+    animation: dialog-in var(--dur) var(--ease);
+}
+
+.bm-dialog::backdrop {
+    background: rgba(5, 7, 14, 0.5);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+
+@keyframes dialog-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.bm-dialog-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-5);
+}
+
+.bm-dialog-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.bm-dialog-message {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+}
+
+.bm-dialog-tabs {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+}
+
+.bm-dialog-tab {
+    flex: 1;
+    padding: 6px var(--space-3);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    transition:
+        color var(--dur-fast) var(--ease),
+        background-color var(--dur-fast) var(--ease);
+}
+
+.bm-dialog-tab:hover {
+    color: var(--text);
+}
+
+.bm-dialog-tab[aria-selected="true"] {
+    color: var(--text);
+    background: var(--surface-active);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.bm-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.bm-field-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.bm-input {
+    width: 100%;
+    padding: 10px var(--space-3);
+    font-size: 0.95rem;
+    color: var(--text);
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    transition:
+        border-color var(--dur-fast) var(--ease),
+        box-shadow var(--dur-fast) var(--ease);
+}
+
+.bm-input::placeholder {
+    color: var(--text-faint);
+}
+
+.bm-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.bm-input[aria-invalid="true"],
+.bm-input:user-invalid {
+    border-color: var(--danger);
+}
+
+.bm-input[aria-invalid="true"]:focus,
+.bm-input:user-invalid:focus {
+    box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.bm-dialog-error {
+    margin: calc(-1 * var(--space-2)) 0 0;
+    font-size: 0.85rem;
+    color: var(--danger);
+}
+
+.bm-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+}
+
+/* Buttons */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-width: 84px;
+    padding: 8px var(--space-4);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    transition:
+        background-color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease),
+        color var(--dur-fast) var(--ease),
+        transform var(--dur-fast) var(--ease);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn--primary {
+    color: var(--on-accent);
+    background: var(--accent);
+}
+
+.btn--primary:hover {
+    background: var(--accent-strong);
+}
+
+.btn--ghost {
+    color: var(--text-muted);
+    background: transparent;
+    border-color: var(--glass-border);
+}
+
+.btn--ghost:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+}
+
+.btn--danger {
+    color: var(--on-danger);
+    background: var(--danger);
+}
+
+.btn--danger:hover {
+    background: #ff9494;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================================================
+   Context menu
+   ========================================================================== */
+
+.context-menu {
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 168px;
+    padding: 6px;
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow:
+        var(--shadow-pop),
+        inset 0 1px 0 var(--glass-highlight);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    backdrop-filter: blur(24px) saturate(150%);
+    animation: menu-in var(--dur-fast) var(--ease);
+}
+
+@keyframes menu-in {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.context-menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: 7px var(--space-3);
+    font-size: 0.9rem;
+    text-align: left;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+}
+
+.context-menu-item:hover,
+.context-menu-item:focus-visible {
+    background: var(--surface-active);
+    outline: none;
+}
+
+.context-menu-item--danger {
+    color: var(--danger);
+}
+
+.context-menu-item--danger:hover,
+.context-menu-item--danger:focus-visible {
+    background: var(--danger-soft);
+}
+
+.context-menu-item svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 700px) {
+    .page-header {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-4);
+        text-align: center;
+    }
+
+    .clock-block {
+        align-items: center;
+        padding-top: 0;
+    }
+
+    .date {
+        padding-left: 0;
+    }
+
+    .weather-card {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .weather-details {
+        text-align: left;
+    }
+
+    .bookmarks-panel {
+        padding: var(--space-3) var(--space-3) var(--space-4);
+        border-radius: var(--radius-lg);
+    }
+
+    .bookmarks-toolbar {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 420px) {
+    :root {
+        --tile-min: 84px;
+        --tile-icon: 44px;
+        --tile-gap: var(--space-2);
+    }
+
+    .weather-card {
+        gap: var(--space-4);
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .weather-temp {
+        font-size: 2.5rem;
+    }
+}
+
+/* ==========================================================================
+   Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .bookmarks-panel.is-editing .tile:not(.tile--add) {
+        animation: none;
+    }
+
+    .tile-main:hover,
+    .tile-main:active {
+        transform: none;
+    }
+}

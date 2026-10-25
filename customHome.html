@@ -3,42 +3,73 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="color-scheme" content="dark" />
         <title>New Tab</title>
         <link rel="stylesheet" href="customHome.css" />
     </head>
     <body>
-        <header>
-            <span id="clock" class="clock-span"></span>
-
-            <div id="weather-container" class="weather-container">
-                <span class="weather-title">Current Weather</span>
-                <!-- might add this back if i do more accurate location? -->
-
-                <!-- <span -->
-                <!--     ><label>City:&nbsp;</label><label id="city-value"></label -->
-                <!-- ></span> -->
-                <!-- <span -->
-                <!--     ><label>Zip:&nbsp;</label><label id="zip-value"></label -->
-                <!-- ></span> -->
-                <span
-                    ><label>Temperature:&nbsp;</label
-                    ><label id="curr-temp-value"></label
-                ></span>
-                <span
-                    ><label>Precipitation:&nbsp;</label
-                    ><label id="curr-precip-value"></label
-                ></span>
-                <span
-                    ><label>Elevation:&nbsp;</label
-                    ><label id="elevation-value"></label
-                ></span>
+        <header class="page-header">
+            <div class="clock-block">
+                <time id="clock" class="clock"
+                    ><span id="clock-time" class="clock-time"></span
+                    ><span id="clock-period" class="clock-period"></span
+                ></time>
+                <div id="date" class="date"></div>
             </div>
+
+            <section
+                id="weather-container"
+                class="weather-card glass is-loading"
+                aria-label="Current weather"
+                aria-busy="true"
+            >
+                <div class="weather-now">
+                    <span
+                        id="weather-icon"
+                        class="weather-icon"
+                        aria-hidden="true"
+                    ></span>
+                    <span id="weather-temp" class="weather-temp">--°</span>
+                </div>
+                <div class="weather-details">
+                    <span id="weather-condition" class="weather-condition"
+                        >Loading weather…</span
+                    >
+                    <dl class="weather-stats">
+                        <div class="weather-stat">
+                            <dt>Feels like</dt>
+                            <dd id="weather-feels">--</dd>
+                        </div>
+                        <div class="weather-stat">
+                            <dt>Precip</dt>
+                            <dd id="weather-precip">--</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
         </header>
         <main>
-            <div id="bookmarks-container" class="bookmarks-container"></div>
+            <section id="bookmarks-panel" class="bookmarks-panel glass">
+                <div class="bookmarks-toolbar">
+                    <nav
+                        id="breadcrumbs"
+                        class="breadcrumbs"
+                        aria-label="Bookmark folders"
+                    ></nav>
+                    <button
+                        id="edit-toggle"
+                        class="edit-toggle"
+                        type="button"
+                        aria-pressed="false"
+                    >
+                        <span class="edit-toggle-icon" aria-hidden="true"></span
+                        ><span class="edit-toggle-label">Edit</span>
+                    </button>
+                </div>
+                <div id="bookmarks-container" class="bookmarks-grid"></div>
+            </section>
         </main>
 
-        <script type="module" src="customHome.js" defer></script>
+        <script type="module" src="customHome.js"></script>
     </body>
 </html>

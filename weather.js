@@ -1,44 +1,155 @@
-async function getLocation() {
-    const endpoint = "http://ip-api.com/json/";
+import {
+    sunIcon,
+    moonIcon,
+    cloudIcon,
+    partlyCloudyDayIcon,
+    partlyCloudyNightIcon,
+    fogIcon,
+    drizzleIcon,
+    rainIcon,
+    snowIcon,
+    thunderIcon,
+} from "./icons.js";
 
-    const response = await fetch(endpoint);
-    const geoData = await response.json();
+// Open-Meteo WMO weather codes -> [label, icon kind]
+const WEATHER_CODES = {
+    0: ["Clear", "clear"],
+    1: ["Mainly clear", "clear"],
+    2: ["Partly cloudy", "partly"],
+    3: ["Overcast", "cloud"],
+    45: ["Fog", "fog"],
+    48: ["Freezing fog", "fog"],
+    51: ["Light drizzle", "drizzle"],
+    53: ["Drizzle", "drizzle"],
+    55: ["Heavy drizzle", "drizzle"],
+    56: ["Freezing drizzle", "drizzle"],
+    57: ["Freezing drizzle", "drizzle"],
+    61: ["Light rain", "rain"],
+    63: ["Rain", "rain"],
+    65: ["Heavy rain", "rain"],
+    66: ["Freezing rain", "rain"],
+    67: ["Freezing rain", "rain"],
+    71: ["Light snow", "snow"],
+    73: ["Snow", "snow"],
+    75: ["Heavy snow", "snow"],
+    77: ["Snow grains", "snow"],
+    80: ["Light showers", "rain"],
+    81: ["Showers", "rain"],
+    82: ["Heavy showers", "rain"],
+    85: ["Snow showers", "snow"],
+    86: ["Heavy snow showers", "snow"],
+    95: ["Thunderstorm", "thunder"],
+    96: ["Thunderstorm with hail", "thunder"],
+    99: ["Thunderstorm with hail", "thunder"],
+};
+
+const ICONS = {
+    cloud: cloudIcon,
+    fog: fogIcon,
+    drizzle: drizzleIcon,
+    rain: rainIcon,
+    snow: snowIcon,
+    thunder: thunderIcon,
+};
+
+function describeWeather(code, isDay) {
+    const [label, kind] = WEATHER_CODES[code] || ["Unknown", "cloud"];
+    let icon = ICONS[kind];
+    if (kind === "clear") {
+        icon = isDay ? sunIcon : moonIcon;
+    } else if (kind === "partly") {
+        icon = isDay ? partlyCloudyDayIcon : partlyCloudyNightIcon;
+    }
+    return { label, icon };
+}
+
+async function fetchJson(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Request failed (${response.status}): ${url}`);
+    }
+    return response.json();
+}
+
+async function getLocation() {
+    const geoData = await fetchJson("http://ip-api.com/json/");
+    if (typeof geoData.lat !== "number" || typeof geoData.lon !== "number") {
+        throw new Error("Location lookup failed");
+    }
     return geoData;
 }
 
 async function getWeather(lat, lon) {
-    const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,precipitation,relative_humidity_2m,apparent_temperature,weather_code,cloud_cover,rain,showers,snowfall,is_day,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl,surface_pressure&timezone=auto&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch`,
+    const params = new URLSearchParams({
+        latitude: lat,
+        longitude: lon,
+        current:
+            "temperature_2m,apparent_temperature,precipitation,weather_code,is_day",
+        timezone: "auto",
+        temperature_unit: "fahrenheit",
+        precipitation_unit: "inch",
+    });
+    const weatherData = await fetchJson(
+        `https://api.open-meteo.com/v1/forecast?${params}`,
     );
-    const weatherData = await response.json();
+    if (!weatherData.current) {
+        throw new Error("Weather response missing current conditions");
+    }
     return weatherData;
 }
 
+function formatTemp(value) {
+    return typeof value === "number" ? `${Math.round(value)}°` : "--";
+}
+
+function formatPrecip(value, unit) {
+    if (typeof value !== "number") {
+        return "--";
+    }
+    const shortUnit = unit === "inch" ? "in" : unit || "";
+    return `${value} ${shortUnit}`.trim();
+}
+
+function setState(card, state) {
+    card.classList.remove("is-loading", "is-error", "is-ready");
+    card.classList.add(state);
+    card.setAttribute("aria-busy", state === "is-loading" ? "true" : "false");
+}
+
 export default async function weatherWidget() {
-    const locationData = await getLocation();
-    const weatherData = await getWeather(locationData.lat, locationData.lon);
+    const card = document.getElementById("weather-container");
+    const condition = document.getElementById("weather-condition");
 
-    // const zip = locationData.zip;
-    // const city = locationData.city;
-    const currentTemp = [
-        weatherData.current.apparent_temperature,
-        weatherData.current_units.apparent_temperature,
-    ];
-    const currentPrecip = [
-        weatherData.current.precipitation,
-        weatherData.current_units.precipitation,
-    ];
-    const elevation = [weatherData.elevation];
+    try {
+        const locationData = await getLocation();
+        const weatherData = await getWeather(
+            locationData.lat,
+            locationData.lon,
+        );
+        const current = weatherData.current;
+        const units = weatherData.current_units || {};
+        const { label, icon } = describeWeather(
+            current.weather_code,
+            current.is_day === 1,
+        );
 
-    //might add this back later, idk if its worth with non-super accurate location
-    // const zipField = document.getElementById("zip-value");
-    // zipField.innerText = zip;
-    // const cityField = document.getElementById("city-value");
-    // cityField.innerText = city;
-    const currTempField = document.getElementById("curr-temp-value");
-    currTempField.innerText = `${currentTemp[0]} ${currentTemp[1]}`;
-    const currPrecipField = document.getElementById("curr-precip-value");
-    currPrecipField.innerText = `${currentPrecip[0]} ${currentPrecip[1]}`;
-    const elevationField = document.getElementById("elevation-value");
-    elevationField.innerText = `${elevation} ft`;
+        document.getElementById("weather-icon").innerHTML = icon;
+        document.getElementById("weather-temp").textContent = formatTemp(
+            current.temperature_2m,
+        );
+        document.getElementById("weather-feels").textContent = formatTemp(
+            current.apparent_temperature,
+        );
+        document.getElementById("weather-precip").textContent = formatPrecip(
+            current.precipitation,
+            units.precipitation,
+        );
+        condition.textContent = label;
+        setState(card, "is-ready");
+    } catch (error) {
+        console.warn("Weather unavailable:", error);
+        document.getElementById("weather-icon").innerHTML = cloudIcon;
+        condition.textContent = "Weather unavailable";
+        setState(card, "is-error");
+    }
 }
