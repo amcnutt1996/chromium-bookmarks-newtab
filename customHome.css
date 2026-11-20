@@ -97,6 +97,9 @@
     --tile-gap: var(--space-1);
     --tile-row-gap: var(--space-1);
 
+    /* Clock + weather */
+    --widget-scale: 1;
+
     /* Motion */
     --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
     --dur-fast: 120ms;
@@ -187,6 +190,7 @@ button {
 .page-header {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-3);
@@ -199,15 +203,15 @@ button {
 .clock-block {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-5);
+    gap: calc(var(--space-2) * var(--widget-scale));
+    padding: calc(var(--space-5) * var(--widget-scale));
 }
 
 .clock {
     display: flex;
     align-items: baseline;
     gap: 0.12em;
-    font-size: clamp(4rem, 11vw, 8.5rem);
+    font-size: calc(clamp(4rem, 11vw, 8.5rem) * var(--widget-scale));
     font-weight: 200;
     line-height: 0.95;
     letter-spacing: -0.03em;
@@ -228,7 +232,7 @@ button {
 
 .date {
     padding-left: 0.2em;
-    font-size: clamp(1rem, 1.6vw, 1.35rem);
+    font-size: calc(clamp(1rem, 1.6vw, 1.35rem) * var(--widget-scale));
     font-weight: 400;
     letter-spacing: 0.01em;
     color: var(--text-muted);
@@ -237,11 +241,16 @@ button {
 /* Weather card */
 
 .weather-card {
+    /* Grow from the minimum width (up to the natural width) so large widget
+       sizes wrap the card below the clock instead of overflowing. */
+    flex: 1 1 calc(280px * var(--widget-scale));
     display: flex;
     align-items: center;
-    gap: var(--space-5);
-    min-width: 280px;
-    padding: var(--space-4) var(--space-5);
+    gap: calc(var(--space-5) * var(--widget-scale));
+    min-width: calc(280px * var(--widget-scale));
+    max-width: max-content;
+    padding: calc(var(--space-4) * var(--widget-scale))
+        calc(var(--space-5) * var(--widget-scale));
     margin: auto var(--space-4);
     border-radius: var(--radius-xl);
     transition: opacity var(--dur) var(--ease);
@@ -250,13 +259,13 @@ button {
 .weather-now {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: calc(var(--space-3) * var(--widget-scale));
 }
 
 .weather-icon {
     display: inline-flex;
-    width: 52px;
-    height: 52px;
+    width: calc(52px * var(--widget-scale));
+    height: calc(52px * var(--widget-scale));
     color: var(--accent-strong);
 }
 
@@ -270,7 +279,7 @@ button {
 }
 
 .weather-temp {
-    font-size: 3rem;
+    font-size: calc(3rem * var(--widget-scale));
     font-weight: 250;
     line-height: 1;
     letter-spacing: -0.02em;
@@ -280,27 +289,27 @@ button {
 .weather-details {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: calc(var(--space-2) * var(--widget-scale));
     min-width: 0;
 }
 
 .weather-condition {
-    font-size: 1.05rem;
+    font-size: calc(1.05rem * var(--widget-scale));
     font-weight: 500;
 }
 
 .weather-stats {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: calc(2px * var(--widget-scale));
     margin: 0;
 }
 
 .weather-stat {
     display: flex;
     justify-content: space-between;
-    gap: var(--space-4);
-    font-size: 0.85rem;
+    gap: calc(var(--space-4) * var(--widget-scale));
+    font-size: calc(0.85rem * var(--widget-scale));
 }
 
 .weather-stat dt {
@@ -322,7 +331,7 @@ button {
 }
 
 .weather-card.is-error {
-    gap: var(--space-3);
+    gap: calc(var(--space-3) * var(--widget-scale));
     min-width: 0;
 }
 
@@ -332,14 +341,14 @@ button {
 }
 
 .weather-card.is-error .weather-icon {
-    width: 28px;
-    height: 28px;
+    width: calc(28px * var(--widget-scale));
+    height: calc(28px * var(--widget-scale));
     color: var(--text-faint);
 }
 
 .weather-card.is-error .weather-condition {
     font-weight: 400;
-    font-size: 0.95rem;
+    font-size: calc(0.95rem * var(--widget-scale));
     color: var(--text-muted);
 }
 
@@ -1078,6 +1087,7 @@ main {
 @media (max-width: 700px) {
     .page-header {
         flex-direction: column;
+        flex-wrap: nowrap;
         align-items: center;
         gap: var(--space-4);
         text-align: center;
@@ -1093,6 +1103,7 @@ main {
     }
 
     .weather-card {
+        flex: initial;
         min-width: 0;
         max-width: 100%;
     }
@@ -1119,12 +1130,13 @@ main {
     }
 
     .weather-card {
-        gap: var(--space-4);
-        padding: var(--space-3) var(--space-4);
+        gap: calc(var(--space-4) * var(--widget-scale));
+        padding: calc(var(--space-3) * var(--widget-scale))
+            calc(var(--space-4) * var(--widget-scale));
     }
 
     .weather-temp {
-        font-size: 2.5rem;
+        font-size: calc(2.5rem * var(--widget-scale));
     }
 }
 

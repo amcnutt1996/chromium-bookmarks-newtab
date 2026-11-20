@@ -120,6 +120,7 @@ const DEFAULTS = {
     panelOpacity: 5.5,
     blur: 22,
     tileSize: 100,
+    widgetSize: 100,
     roundness: 100,
     clock24h: false,
     showDate: true,
@@ -143,6 +144,7 @@ const RANGE_FIELDS = [
     { key: "panelOpacity", label: "Panel opacity", min: 0, max: 60, step: 0.5, unit: "%" },
     { key: "blur", label: "Panel blur", min: 0, max: 40, step: 1, unit: "px" },
     { key: "tileSize", label: "Bookmark size", min: 75, max: 150, step: 5, unit: "%" },
+    { key: "widgetSize", label: "Widget size", min: 75, max: 150, step: 5, unit: "%" },
     { key: "roundness", label: "Roundness", min: 0, max: 150, step: 5, unit: "%" },
 ];
 
@@ -224,6 +226,7 @@ function buildTheme(s) {
             "--glow-intensity": String(s.glowIntensity / 100),
             "--glass-blur": `${s.blur}px`,
             "--tile-scale": String(s.tileSize / 100),
+            "--widget-scale": String(s.widgetSize / 100),
             "--radius-scale": String(s.roundness / 100),
         },
         scheme: luminance(colors.background) > 0.4 ? "light" : "dark",
