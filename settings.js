@@ -133,11 +133,11 @@ const COLOR_FIELDS = [
     ["text", "Text"],
     ["accent", "Accent"],
     ["panel", "Panels"],
-    // Labels are deliberately swapped relative to the keys; keeping the keys
-    // means stored settings and presets need no migration.
-    ["glow2", "Glow 1"],
-    ["glow1", "Glow 2"],
-    ["glow3", "Glow 3"],
+    // Glows are labelled by where they sit on the page (see the body
+    // background in customHome.css), ordered top-left, top-right, bottom-right.
+    ["glow1", "Top-left glow"],
+    ["glow3", "Top-right glow"],
+    ["glow2", "Bottom-right glow"],
     ["danger", "Delete / errors"],
 ];
 
