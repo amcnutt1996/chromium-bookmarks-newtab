@@ -243,9 +243,9 @@ button {
 /* Weather card */
 
 .weather-card {
-    /* Grow from the minimum width (up to the natural width) so large widget
-       sizes wrap the card below the clock instead of overflowing. */
-    flex: 1 1 calc(280px * var(--header-scale));
+    /* Grow from the content's minimum width up to its natural width, so the
+       card wraps below the clock rather than squeezing its content. */
+    flex: 1 1 min-content;
     display: flex;
     align-items: center;
     gap: calc(var(--space-5) * var(--header-scale));
