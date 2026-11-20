@@ -128,18 +128,23 @@ const DEFAULTS = {
     tempUnit: "fahrenheit",
 };
 
-const COLOR_FIELDS = [
+const BASE_COLOR_FIELDS = [
     ["background", "Background"],
     ["text", "Text"],
     ["accent", "Accent"],
     ["panel", "Panels"],
-    // Glows are labelled by where they sit on the page (see the body
-    // background in customHome.css), ordered top-left, top-right, bottom-right.
-    ["glow1", "Top-left glow"],
-    ["glow3", "Top-right glow"],
-    ["glow2", "Bottom-right glow"],
     ["danger", "Delete / errors"],
 ];
+
+// Labelled by where each glow sits on the page (see the body background in
+// customHome.css), ordered top-left, top-right, bottom-right.
+const GLOW_FIELDS = [
+    ["glow1", "Top left"],
+    ["glow3", "Top right"],
+    ["glow2", "Bottom right"],
+];
+
+const COLOR_FIELDS = [...BASE_COLOR_FIELDS, ...GLOW_FIELDS];
 
 const RANGE_FIELDS = [
     { key: "glowIntensity", label: "Glow", min: 0, max: 200, step: 5, unit: "%" },
@@ -338,10 +343,10 @@ function buildPresets() {
     return list;
 }
 
-function buildColors() {
+function buildColors(fields) {
     const grid = el("div", "settings-colors");
-    controls.colors = {};
-    for (const [key, label] of COLOR_FIELDS) {
+    controls.colors ??= {};
+    for (const [key, label] of fields) {
         const row = el("label", "settings-color");
         const input = el("input", "settings-color-input", { type: "color" });
         input.addEventListener("input", () =>
@@ -486,7 +491,8 @@ function setupPanel() {
     const body = el("div", "settings-body");
     body.append(
         section("Theme", buildPresets()),
-        section("Colors", buildColors()),
+        section("Colors", buildColors(BASE_COLOR_FIELDS)),
+        section("Glow", buildColors(GLOW_FIELDS)),
         section("Appearance", buildRanges()),
         section("Clock & weather", buildToggles()),
     );
