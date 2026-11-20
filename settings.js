@@ -513,7 +513,9 @@ function setupPanel() {
         "pointerdown",
         (event) => {
             if (panel.hidden) return;
-            if (panel.contains(event.target) || toggle.contains(event.target)) return;
+            // The preview counts as part of the panel: closing mid-press would hide
+            // it and let the rest of the click/tap land on the bookmark beneath.
+            if ([panel, toggle, preview].some((node) => node.contains(event.target))) return;
             setOpen(false);
         },
         true,
