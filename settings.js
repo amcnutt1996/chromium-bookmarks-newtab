@@ -133,8 +133,10 @@ const COLOR_FIELDS = [
     ["text", "Text"],
     ["accent", "Accent"],
     ["panel", "Panels"],
-    ["glow1", "Glow 1"],
-    ["glow2", "Glow 2"],
+    // Labels are deliberately swapped relative to the keys; keeping the keys
+    // means stored settings and presets need no migration.
+    ["glow2", "Glow 1"],
+    ["glow1", "Glow 2"],
     ["glow3", "Glow 3"],
     ["danger", "Delete / errors"],
 ];
