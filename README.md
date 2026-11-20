@@ -22,6 +22,7 @@ I got frustrated that Brave's new tab page couldn't put my bookmarks front and c
   - Sliders for glow strength, panel opacity and blur, bookmark size, widget size (clock and weather) and corner roundness.
   - 12/24-hour clock, show/hide the date and weather, and °F/°C.
   - Settings sync across your devices via `chrome.storage.sync`.
+  - While it's open, a small sample error dialog in the bottom left previews your colors live.
 - Shows a live clock and the current weather for your approximate location.
 - Works in any Chromium browser (Brave, Chrome, Edge, …).
 

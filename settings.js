@@ -434,6 +434,23 @@ function buildResetButton() {
     return button;
 }
 
+// Decorative sample error dialog shown bottom left while the panel is open.
+// It's styled only with the theme's CSS variables, so color changes and
+// presets show up on it live.
+function buildPreview() {
+    const preview = el("div", "settings-preview", { hidden: true });
+    preview.setAttribute("aria-hidden", "true");
+    const title = el("div", "settings-preview-title");
+    title.append(el("span", "settings-preview-icon", { textContent: "!" }), "Error");
+    preview.append(
+        title,
+        el("p", "settings-preview-message", { textContent: "Something went wrong." }),
+        el("p", "settings-preview-detail", { textContent: "Just a preview." }),
+        el("span", "settings-preview-action", { textContent: "Retry" }),
+    );
+    return preview;
+}
+
 function syncControls() {
     if (!controls.colors) return;
     const presetKey = activePresetKey();
@@ -479,8 +496,12 @@ function setupPanel() {
     panel.append(header, body, footer);
     syncControls();
 
+    const preview = buildPreview();
+    document.body.append(preview);
+
     const setOpen = (open) => {
         panel.hidden = !open;
+        preview.hidden = !open;
         toggle.setAttribute("aria-expanded", String(open));
         if (open) {
             panel.querySelector("button, input")?.focus();
@@ -497,7 +518,9 @@ function setupPanel() {
         "pointerdown",
         (event) => {
             if (panel.hidden) return;
-            if (panel.contains(event.target) || toggle.contains(event.target)) return;
+            // The preview counts as part of the panel: closing mid-press would hide
+            // it and let the rest of the click/tap land on the bookmark beneath.
+            if ([panel, toggle, preview].some((node) => node.contains(event.target))) return;
             setOpen(false);
         },
         true,
