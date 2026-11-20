@@ -19,7 +19,7 @@ I got frustrated that Brave's new tab page couldn't put my bookmarks front and c
   - Right-click a tile to rename it or edit its URL.
 - Has a **settings** panel (gear button, bottom right):
   - Theme presets, plus color pickers for the background, text, accent, panels, background glows and delete/error color.
-  - Sliders for glow strength, panel opacity and blur, bookmark size and corner roundness.
+  - Sliders for glow strength, panel opacity and blur, bookmark size, widget size (clock and weather) and corner roundness.
   - 12/24-hour clock, show/hide the date and weather, and °F/°C.
   - Settings sync across your devices via `chrome.storage.sync`.
 - Shows a live clock and the current weather for your approximate location.
