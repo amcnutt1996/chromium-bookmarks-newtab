@@ -65,7 +65,7 @@
     --chip-border: color-mix(in srgb, var(--text) 10%, transparent);
     --input-bg: color-mix(in srgb, var(--text) 6%, transparent);
 
-    --shadow-card: 0 10px 40px rgba(0, 0, 0, 0.35);
+    --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.3);
     --shadow-pop: 0 18px 60px rgba(0, 0, 0, 0.5);
 
     /* Radii */
@@ -677,8 +677,6 @@ main {
     border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
     border-radius: 50%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
     transition:
         background-color var(--dur-fast) var(--ease),
         color var(--dur-fast) var(--ease),
@@ -703,22 +701,7 @@ main {
     stroke-width: 2.5;
 }
 
-/* Edit mode jiggle */
-
-.bookmarks-panel.is-editing .tile:not(.tile--add) {
-    animation: jiggle 0.28s ease-in-out infinite alternate;
-    transform-origin: 50% 40%;
-}
-
-.bookmarks-panel.is-editing .tile:not(.tile--add):nth-child(2n) {
-    animation-delay: -0.14s;
-    animation-duration: 0.31s;
-}
-
-.bookmarks-panel.is-editing .tile:not(.tile--add):nth-child(3n) {
-    animation-delay: -0.07s;
-    animation-duration: 0.26s;
-}
+/* Edit mode */
 
 .bookmarks-panel.is-editing .tile-main {
     cursor: grab;
@@ -726,23 +709,6 @@ main {
 
 .bookmarks-panel.is-editing .tile--add .tile-main {
     cursor: pointer;
-}
-
-/* Hold still while something is being dragged (or pointed at). Selectors
-   must out-rank the animation shorthand above, which resets play-state. */
-.bookmarks-panel.is-editing .bookmarks-grid:has(.is-dragging) .tile,
-.bookmarks-panel.is-editing .tile:hover,
-.bookmarks-panel.is-editing .tile:focus-within {
-    animation-play-state: paused;
-}
-
-@keyframes jiggle {
-    from {
-        transform: rotate(-1.2deg);
-    }
-    to {
-        transform: rotate(1.2deg);
-    }
 }
 
 @keyframes badge-in {
@@ -1585,10 +1551,6 @@ main {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-    }
-
-    .bookmarks-panel.is-editing .tile:not(.tile--add) {
-        animation: none;
     }
 
     .tile-main:hover,
